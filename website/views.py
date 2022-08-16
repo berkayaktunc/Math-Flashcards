@@ -232,14 +232,69 @@ def divide(request):
     })
 
 
-"""
-my_answer = "Hey you forget to fill the form!"
-        color = "warning"
+def mix(request):
+    from random import randint
 
-        return render(request, 'divide.html', {
-            'my_answer': my_answer,
-            'num_1': num_1,
-            'num_2': num_2,
-            'color': color,
-        })
-"""
+    opps = ['+', '-', 'x', '/']
+    opperant = opps[randint(0, 3)]
+    num_1 = randint(0, 10)
+    num_2 = randint(1, 10)
+    answer = request.POST.get('answer')
+
+    if request.method == "POST":
+        old_num_1 = request.POST['old_num_1']
+        old_num_2 = request.POST['old_num_2']
+        old_opp = request.POST['opp']
+
+        if old_opp == 'x':
+            old_opp = '*'
+
+        correct_answer = eval(old_num_1 + old_opp + old_num_2)
+
+        if not answer:
+            my_answer = "Hey you forget to fill the form!"
+            color = "warning"
+
+            return render(request, 'mix.html', {
+                'my_answer': my_answer,
+                'num_1': num_1,
+                'num_2': num_2,
+                'opp': opperant,
+                'color': color,
+            })
+
+        try:
+            if float(answer) == correct_answer:
+                my_answer = "Correct! " + old_num_1 + old_opp + old_num_2 + " = " + answer
+                color = "success"
+            else:
+                my_answer = "Incorrect! " + old_num_1 + old_opp + old_num_2 + \
+                    " != " + answer + " it is " + str(correct_answer)
+                color = "danger"
+
+            return render(request, 'mix.html', {
+                'answer': answer,
+                'my_answer': my_answer,
+                'num_1': num_1,
+                'num_2': num_2,
+                'opp': opperant,
+                'color': color,
+            })
+
+        except:
+            my_answer = "You fill the form incorrect!"
+            color = "warning"
+
+            return render(request, 'mix.html', {
+                'my_answer': my_answer,
+                'num_1': num_1,
+                'num_2': num_2,
+                'opp': opperant,
+                'color': color,
+            })
+
+    return render(request, 'mix.html', {
+        'num_1': num_1,
+        'num_2': num_2,
+        'opp': opperant,
+    })

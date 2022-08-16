@@ -9,4 +9,5 @@ urlpatterns = [
     path('subtract', views.subtract, name="subtract"),
     path('multiple', views.multiple, name="multiple"),
     path('divide', views.divide, name="divide"),
+    path('mix', views.mix, name="mix"),
 ]
